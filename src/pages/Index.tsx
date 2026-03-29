@@ -234,11 +234,11 @@ export default function Index() {
 
           <div className="flex items-center gap-3">
             <a
-              href="tel:+78001234567"
+              href="tel:+79246055266"
               className="hidden md:flex items-center gap-2 text-sm font-medium text-primary hover:text-orange-400 transition-colors"
             >
               <Icon name="Phone" size={16} />
-              8-800-123-45-67
+              8 (924) 605-52-66
             </a>
             <button
               className="lg:hidden text-muted-foreground hover:text-foreground"
@@ -261,9 +261,9 @@ export default function Index() {
                   {item.label}
                 </button>
               ))}
-              <a href="tel:+78001234567" className="text-primary font-medium py-2 flex items-center gap-2">
+              <a href="tel:+79246055266" className="text-primary font-medium py-2 flex items-center gap-2">
                 <Icon name="Phone" size={16} />
-                8-800-123-45-67
+                8 (924) 605-52-66
               </a>
             </div>
           </div>
@@ -804,8 +804,8 @@ export default function Index() {
 
               <div className="lg:col-span-2 space-y-5">
                 {[
-                  { icon: "Phone", title: "Телефон", value: "8-800-123-45-67", sub: "Бесплатно по России" },
-                  { icon: "MessageCircle", title: "WhatsApp / Telegram", value: "+7 (999) 123-45-67", sub: "Ответим быстро" },
+                  { icon: "Phone", title: "Телефон", value: "8 (924) 605-52-66", sub: "Основной" },
+                  { icon: "Phone", title: "Телефон", value: "8 (964) 124-90-07", sub: "Дополнительный" },
                   { icon: "Mail", title: "Email", value: "info@garmoniya-avto.ru", sub: "Для деловых запросов" },
                   { icon: "Clock", title: "Режим работы", value: "Пн–Сб 9:00–20:00", sub: "Воскресенье — выходной" },
                   { icon: "MapPin", title: "Адрес", value: "Владивосток, ул. Светланская, 1", sub: "Головной офис" },
