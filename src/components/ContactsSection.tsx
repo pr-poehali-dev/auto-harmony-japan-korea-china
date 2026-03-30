@@ -95,9 +95,9 @@ export default function ContactsSection({ scrollTo }: ContactsSectionProps) {
                 {[
                   { icon: "Phone", title: "Телефон", value: "8 (924) 605-52-66", sub: "Основной" },
                   { icon: "Phone", title: "Телефон", value: "8 (964) 124-90-07", sub: "Дополнительный" },
-                  { icon: "Mail", title: "Email", value: "info@garmoniya-avto.ru", sub: "Для деловых запросов" },
+                  { icon: "Mail", title: "Email", value: "exalted.man555@gmail.com", sub: "Для деловых запросов" },
                   { icon: "Clock", title: "Режим работы", value: "Пн–Сб 9:00–20:00", sub: "Воскресенье — выходной" },
-                  { icon: "MapPin", title: "Адрес", value: "Владивосток, ул. Светланская, 1", sub: "Головной офис" },
+                  { icon: "MapPin", title: "Адрес", value: "Иркутск", sub: "Головной офис" },
                 ].map((contact, i) => (
                   <div key={i} className="flex items-start gap-4 p-4 bg-background border border-border rounded-xl">
                     <div className="w-12 h-12 stripe-accent rounded-lg flex items-center justify-center flex-shrink-0">
