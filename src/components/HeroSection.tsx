@@ -177,12 +177,12 @@ export default function HeroSection({ scrollTo, calcForm, setCalcForm, calcResul
                     onChange={(e) => setCalcForm({ ...calcForm, engine: e.target.value })}
                     className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground focus:outline-none focus:border-primary transition-colors"
                   >
-                    <option value="1.0">до 1.0</option>
-                    <option value="1.4">1.0 – 1.5</option>
-                    <option value="1.8">1.5 – 2.0</option>
-                    <option value="2.0">2.0 – 2.5</option>
-                    <option value="3.0">2.5 – 3.5</option>
-                    <option value="4.0">более 3.5</option>
+                    <option value="1000">до 1 000 куб.см</option>
+                    <option value="1500">1 000 – 1 500 куб.см</option>
+                    <option value="1800">1 500 – 1 800 куб.см</option>
+                    <option value="2300">1 800 – 2 300 куб.см</option>
+                    <option value="3000">2 300 – 3 000 куб.см</option>
+                    <option value="9999">более 3 000 куб.см</option>
                   </select>
                 </div>
 
