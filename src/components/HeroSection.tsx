@@ -240,10 +240,21 @@ export default function HeroSection({ scrollTo, calcForm, setCalcForm, calcResul
                       </div>
                     </div>
                   </div>
-                  <p className="text-muted-foreground text-xs mt-4 text-center">
-                    * Расчёт ориентировочный. Точная стоимость зависит от комплектации и актуального курса USD.
-                    Курс USD = 90 ₽.
-                  </p>
+                  <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <p className="text-muted-foreground text-xs text-center sm:text-left">
+                      * Расчёт ориентировочный. Ставки таможенных пошлин и утилсбора актуальны на 2026 год.
+                      Курс USD ≈ 90 ₽, EUR ≈ 100 ₽.
+                    </p>
+                    <a
+                      href="https://www.tks.ru/auto/calc"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-shrink-0 flex items-center gap-2 px-4 py-2 border border-primary/40 text-primary rounded-lg text-sm font-medium hover:bg-primary/10 transition-colors"
+                    >
+                      <Icon name="ExternalLink" size={14} />
+                      Уточнить на tks.ru
+                    </a>
+                  </div>
                 </div>
               )}
             </div>
