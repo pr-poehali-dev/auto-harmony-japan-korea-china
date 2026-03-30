@@ -31,89 +31,65 @@ export default function Index() {
 
   const calculateCost = () => {
     const price = parseFloat(calcForm.carPrice) || 0;
-    // engine теперь хранится в куб.см как строка ("1000","1500","1800","2300","3000","9999")
     const engineCc = parseInt(calcForm.engine);
     const yearNum = parseInt(calcForm.year);
     const age = new Date().getFullYear() - yearNum;
 
-    const EUR = 100; // курс EUR/RUB
-    const USD = 90;  // курс USD/RUB
+    const EUR = 100; // курс EUR/RUB (примерный)
+    const USD = 90;  // курс USD/RUB (примерный)
     const priceRub = price * USD;
     const priceEur = priceRub / EUR;
 
-    let duty = 0; // пошлина
+    let duty = 0;
 
     if (calcForm.engineType === "electric") {
-      // Электромобили: 15%
+      // Электромобили: 15% от тамстоимости
       duty = Math.round(priceRub * 0.15);
     } else if (age < 3) {
-      // До 3 лет — max(% от стоимости, евро × куб.см)
-      // Ставки ЕТС ЕАЭС для физлиц, Приложение 8
-      type RateRow = { maxCc: number; pct: number; eurPerCc: number };
-      const table: RateRow[] = [
-        { maxCc: 1000, pct: 0.54, eurPerCc: 2.5 },
-        { maxCc: 1500, pct: 0.48, eurPerCc: 3.5 },
-        { maxCc: 1800, pct: 0.48, eurPerCc: 5.0 },
-        { maxCc: 2300, pct: 0.48, eurPerCc: 7.5 },
-        { maxCc: 3000, pct: 0.48, eurPerCc: 7.5 },
-        { maxCc: 99999, pct: 0.48, eurPerCc: 15.0 },
+      // До 3 лет: ставка зависит от СТОИМОСТИ в евро (Решение Совета ЕЭК № 107, Приложение 2, Таблица 2)
+      // max(% от стоимости, евро/куб.см × объём)
+      type Row = { maxEur: number; pct: number; eurPerCc: number };
+      const table: Row[] = [
+        { maxEur: 8500,   pct: 0.54, eurPerCc: 2.5  },
+        { maxEur: 16700,  pct: 0.48, eurPerCc: 3.5  },
+        { maxEur: 42300,  pct: 0.48, eurPerCc: 5.5  },
+        { maxEur: 84500,  pct: 0.48, eurPerCc: 7.5  },
+        { maxEur: 169000, pct: 0.48, eurPerCc: 15.0 },
+        { maxEur: Infinity, pct: 0.48, eurPerCc: 20.0 },
       ];
-      const row = table.find((r) => engineCc <= r.maxCc)!;
-      duty = Math.round(Math.max(priceRub * row.pct, priceEur * row.eurPerCc * engineCc));
+      const row = table.find((r) => priceEur <= r.maxEur)!;
+      duty = Math.round(Math.max(priceRub * row.pct, row.eurPerCc * engineCc * EUR));
     } else if (age < 5) {
-      // 3–5 лет — только евро × куб.см
+      // 3–5 лет: только евро/куб.см (Таблица 3)
       const table = [
-        { maxCc: 1000, eurPerCc: 1.5 },
-        { maxCc: 1500, eurPerCc: 1.7 },
-        { maxCc: 1800, eurPerCc: 2.5 },
-        { maxCc: 2300, eurPerCc: 2.7 },
-        { maxCc: 3000, eurPerCc: 3.0 },
+        { maxCc: 1000,  eurPerCc: 1.5 },
+        { maxCc: 1500,  eurPerCc: 1.7 },
+        { maxCc: 1800,  eurPerCc: 2.5 },
+        { maxCc: 2300,  eurPerCc: 2.7 },
+        { maxCc: 3000,  eurPerCc: 3.0 },
         { maxCc: 99999, eurPerCc: 3.6 },
       ];
       const row = table.find((r) => engineCc <= r.maxCc)!;
-      duty = Math.round(priceEur * row.eurPerCc * engineCc);
-    } else if (age < 7) {
-      // 5–7 лет
-      const table = [
-        { maxCc: 1000, eurPerCc: 3.0 },
-        { maxCc: 1500, eurPerCc: 3.2 },
-        { maxCc: 1800, eurPerCc: 3.5 },
-        { maxCc: 2300, eurPerCc: 4.8 },
-        { maxCc: 3000, eurPerCc: 5.0 },
-        { maxCc: 99999, eurPerCc: 5.7 },
-      ];
-      const row = table.find((r) => engineCc <= r.maxCc)!;
-      duty = Math.round(priceEur * row.eurPerCc * engineCc);
+      duty = Math.round(row.eurPerCc * engineCc * EUR);
     } else {
-      // Старше 7 лет — те же ставки что 5–7
+      // Старше 5 лет: только евро/куб.см (Таблица 3)
       const table = [
-        { maxCc: 1000, eurPerCc: 3.0 },
-        { maxCc: 1500, eurPerCc: 3.2 },
-        { maxCc: 1800, eurPerCc: 3.5 },
-        { maxCc: 2300, eurPerCc: 4.8 },
-        { maxCc: 3000, eurPerCc: 5.0 },
+        { maxCc: 1000,  eurPerCc: 3.0 },
+        { maxCc: 1500,  eurPerCc: 3.2 },
+        { maxCc: 1800,  eurPerCc: 3.5 },
+        { maxCc: 2300,  eurPerCc: 4.8 },
+        { maxCc: 3000,  eurPerCc: 5.0 },
         { maxCc: 99999, eurPerCc: 5.7 },
       ];
       const row = table.find((r) => engineCc <= r.maxCc)!;
-      duty = Math.round(priceEur * row.eurPerCc * engineCc);
+      duty = Math.round(row.eurPerCc * engineCc * EUR);
     }
 
-    // Утилизационный сбор 2026 (базовая ставка 3 400 ₽ × коэффициент)
-    // Коэффициенты для физлиц: возраст < 3 лет / ≥ 3 лет
-    let utilFee = 0;
-    if (calcForm.engineType === "electric") {
-      utilFee = Math.round(3400 * (age < 3 ? 4.26 : 10.36));
-    } else if (engineCc <= 1000) {
-      utilFee = Math.round(3400 * (age < 3 ? 4.26 : 10.36));
-    } else if (engineCc <= 1800) {
-      utilFee = Math.round(3400 * (age < 3 ? 15.03 : 26.44));
-    } else if (engineCc <= 2300) {
-      utilFee = Math.round(3400 * (age < 3 ? 29.52 : 50.18));
-    } else if (engineCc <= 3000) {
-      utilFee = Math.round(3400 * (age < 3 ? 42.24 : 63.95));
-    } else {
-      utilFee = Math.round(3400 * (age < 3 ? 84.48 : 128.02));
-    }
+    // Утилизационный сбор с 01.12.2025 (Постановление Правительства № 1713)
+    // Физлица до 160 л.с. — льготная фиксированная ставка
+    // Физлица свыше 160 л.с. — коммерческие ставки (базовая 20 000 ₽ × коэффициент)
+    // В калькуляторе мощность неизвестна, применяем льготную (до 160 л.с.) — самый частый случай из Японии/Кореи
+    const utilFee = age < 3 ? 3400 : 5200;
 
     const deliveryCosts: Record<string, number> = {
       japan: 180000,
